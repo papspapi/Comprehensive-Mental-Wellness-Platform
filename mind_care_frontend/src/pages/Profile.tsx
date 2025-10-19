@@ -1,22 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Camera, 
-  Mail, 
-  Phone, 
-  Shield, 
-  Upload,
-  Save,
-  Edit,
-  Trash2 
-} from 'lucide-react';
-
-const { useState, useEffect } = React;
+  FaCamera as Camera, 
+  FaEnvelope as Mail, 
+  FaPhone as Phone, 
+  FaShieldAlt as Shield, 
+  FaUpload as Upload,
+  FaSave as Save,
+  FaEdit as Edit,
+  FaTrash as Trash2 
+} from 'react-icons/fa';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
@@ -200,13 +198,13 @@ const Profile = (): React.JSX.Element => {
             <CardContent className="space-y-3">
               <div className="flex items-center space-x-2 text-sm">
                 <span className="text-muted-foreground">
-                  <Camera className="h-4 w-4" />
+                  <Camera size={16} />
                 </span>
                 <span>{user.email}</span>
               </div>
               {user.phone && (
                 <div className="flex items-center space-x-2 text-sm">
-                  <Phone className="h-4 w-4 text-muted-foreground" />
+                  <Phone size={16} />
                   <span>{user.phone}</span>
                 </div>
               )}
@@ -214,71 +212,7 @@ const Profile = (): React.JSX.Element => {
           </Card>
           
           <ProfileCompleteness user={user} />
-              <input
-                id="profile-image-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="absolute bottom-3 right-3 h-9 w-9 rounded-full"
-                    disabled={isUploadingImage}
-                    title="Change profile picture"
-                  >
-                    {isUploadingImage ? (
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                    ) : (
-                      <Camera className="h-4 w-4" />
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={triggerFileInput} disabled={isUploadingImage}>
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload new photo
-                  </DropdownMenuItem>
-                  {(editData.avatar || user.avatar) && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={removeProfilePicture} disabled={isUploadingImage}>
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Remove photo
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <CardTitle className="text-xl">{user.name}</CardTitle>
-            <CardDescription className="flex items-center justify-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <Badge variant="outline">
-                  <div className="flex items-center space-x-1">
-                    {user.role === 'admin' && <span className="h-3 w-3 mr-1"><Shield /></span>}
-                    <span>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
-                  </div>
-                </Badge>
-              </div>
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center space-x-2 text-sm">
-              <span className="text-muted-foreground"><Mail className="h-4 w-4" /></span>
-              <span>{user.email}</span>
-            </div>
-            {user.phone && (
-              <div className="flex items-center space-x-2 text-sm">
-                <span className="text-muted-foreground"><Phone className="h-4 w-4" /></span>
-                <span>{user.phone}</span>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        </div>
 
         <Card className="w-full flex-1 h-full min-h-[560px]">
           <CardHeader className="flex flex-row items-center justify-between">
@@ -291,8 +225,9 @@ const Profile = (): React.JSX.Element => {
             <Button
               variant={isEditing ? 'default' : 'outline'}
               onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+              className="flex items-center gap-2"
             >
-              {isEditing ? <Save className="h-4 w-4 mr-2" /> : <Edit className="h-4 w-4 mr-2" />}
+              {isEditing ? <Save size={16} /> : <Edit size={16} />}
               {isEditing ? 'Save Changes' : 'Edit Profile'}
             </Button>
           </CardHeader>
@@ -483,7 +418,7 @@ const Profile = (): React.JSX.Element => {
                     <div className="space-y-2">
                       <Label>Specializations</Label>
                       <div className="flex flex-wrap gap-2">
-                        {user.specialization?.map((spec, index) => (
+                        {user.specialization?.map((spec: string, index: number) => (
                           <Badge key={index} variant="secondary">
                             {spec}
                           </Badge>
@@ -509,7 +444,7 @@ const Profile = (): React.JSX.Element => {
                     <div className="space-y-2">
                       <h4 className="text-sm font-medium mb-2">Permissions</h4>
                       <div className="flex flex-wrap gap-2">
-                        {user.permissions?.map((permission, index) => (
+                        {user.permissions?.map((permission: string, index: number) => (
                           <span key={index} className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
                             {permission.replace('_', ' ').toUpperCase()}
                           </span>

@@ -1,33 +1,4 @@
-/**
- * @fileoverview Error Reporting Service - Centralized error handling and reporting
- * 
- * Service for handling, categorizing, and reporting application errors in the
- * mental health platform with privacy-conscious error tracking.
- * 
- * Features:
- * - Privacy-compliant error reporting
- * - Error categorization and severity assessment
- * - User-friendly error message generation
- * - Analytics integration for error tracking
- * - Rate limiting to prevent spam
- * - Mental health-specific error context
- * 
- * @example
- * ```tsx
- * import { errorReportingService } from '@/services/errorReportingService';
- * 
- * // Report an error
- * errorReportingService.reportError(error, {
- *   component: 'MoodTracker',
- *   context: { userId: 'user123', action: 'saveMood' }
- * });
- * 
- * // Get user-friendly message
- * const message = errorReportingService.getUserFriendlyMessage(error);
- * ```
- */
-
-import { ErrorInfo } from 'react';
+import React from 'react';
 
 /**
  * Error severity levels
@@ -203,6 +174,14 @@ const ERROR_MESSAGES = {
     default: "We detected this might be urgent. Immediate help is available through the resources below.",
     crisis: "Crisis support activated. Please contact emergency services or use the resources provided immediately."
   },
+  [ErrorType.DATA_CORRUPTION]: {
+    default: "We detected a data integrity issue. Your information is being protected and we're working to resolve this.",
+    crisis: "Data integrity issue detected. For immediate support, please use emergency resources while we secure your information."
+  },
+  [ErrorType.PRIVACY_VIOLATION]: {
+    default: "We detected a potential privacy concern. Your data security is our top priority and we're investigating immediately.",
+    crisis: "Privacy concern detected. For immediate support, please use emergency resources while we secure your information."
+  },
   [ErrorType.UNKNOWN]: {
     default: "We encountered an unexpected issue. Your data is safe, and our team has been notified.",
     crisis: "Unexpected error. If this is a crisis, please don't wait - use emergency resources immediately."
@@ -343,7 +322,7 @@ class ErrorReportingService {
    */
   private sanitizeMessage(message: string): string {
     return message
-      .replace(/\b[\w\.-]+@[\w\.-]+\.\w+\b/g, '[EMAIL]') // Email addresses
+      .replace(/\b[\w.-]+@[\w.-]+\.\w+\b/g, '[EMAIL]') // Email addresses
       .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[SSN]') // SSN format
       .replace(/\b\d{4}\s?\d{4}\s?\d{4}\s?\d{4}\b/g, '[CARD]') // Credit card format
       .replace(/token[:\s=][\w-]+/gi, 'token:[REDACTED]') // Auth tokens
@@ -426,7 +405,7 @@ class ErrorReportingService {
   public async reportError(
     error: Error,
     context: ErrorContext = {},
-    errorInfo?: ErrorInfo
+    errorInfo?: React.ErrorInfo
   ): Promise<string> {
     const errorId = this.generateErrorId();
 
@@ -454,7 +433,7 @@ class ErrorReportingService {
     const report: ErrorReport = {
       id: errorId,
       error: sanitizedError,
-      errorInfo: errorInfo ? {
+      errorInfo: errorInfo && errorInfo.componentStack ? {
         componentStack: errorInfo.componentStack
       } : undefined,
       classification,

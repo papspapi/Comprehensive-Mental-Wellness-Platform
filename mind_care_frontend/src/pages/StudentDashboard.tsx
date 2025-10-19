@@ -5,38 +5,39 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import {
-  MessageCircle,
-  Calendar,
-  BookOpen,
-  Users,
-  Heart,
-  CheckCircle,
-  Zap,
-  Star,
-  Award,
-  TrendingUp,
-  Clock,
-  Target,
-  Sparkles,
-  ArrowRight,
-  Play,
-  Phone,
-  Shield,
-  Brain,
-  Wind,
-  Bell,
-  Settings,
-  Smile,
-  Activity,
-  Moon,
-  Coffee,
-  BarChart3,
-  Lightbulb,
-  ChevronRight,
-  Plus,
-  Timer,
-} from 'lucide-react';
-import { useState, useEffect } from 'react';
+  FaComments as MessageCircle,
+  FaCalendar as Calendar,
+  FaBook as BookOpen,
+  FaUsers as Users,
+  FaHeart as Heart,
+  FaCheckCircle as CheckCircle,
+  FaBolt as Zap,
+  FaStar as Star,
+  FaAward as Award,
+  FaChartLine as TrendingUp,
+  FaClock as Clock,
+  FaBullseye as Target,
+  FaMagic as Sparkles,
+  FaArrowRight as ArrowRight,
+  FaPlay as Play,
+  FaPhone as Phone,
+  FaShieldAlt as Shield,
+  FaBrain as Brain,
+  FaWind as Wind,
+  FaBell as Bell,
+  FaCog as Settings,
+  FaSmile as Smile,
+  FaChartArea as Activity,
+  FaMoon as Moon,
+  FaCoffee as Coffee,
+  FaChartBar as BarChart3,
+  FaLightbulb as Lightbulb,
+  FaChevronRight as ChevronRight,
+  FaPlus as Plus,
+  FaStopwatch as Timer,
+} from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+
 
 // Import new functional components
 import { MoodTracker } from '@/components/dashboard/MoodTracker';
@@ -52,7 +53,7 @@ import QuickMoodHeader from '@/components/dashboard/QuickMoodHeader';
 import MoodAnalytics from '@/components/dashboard/MoodAnalytics';
 import { GoalsTracker } from '@/components/dashboard/GoalsTracker';
 import { ActivityTracker, AchievementTracker } from '@/components/dashboard/ActivityTracker';
-import { EnhancedDailyTips } from '@/components/dashboard/EnhancedDailyTips';
+import EnhancedDailyTips from '@/components/dashboard/EnhancedDailyTips';
 import { InteractiveAnalytics } from '@/components/dashboard/InteractiveAnalytics';
 import {
   useActivityLog,

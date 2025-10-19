@@ -1,15 +1,18 @@
-import React, { createContext, useContext, useEffect, useRef } from 'react';
-import { 
+import React, { createContext, useContext, useEffect, useRef } from "react";
+import {
   announceToScreenReader,
   focusElement,
   generateAccessibilityId,
   prefersReducedMotion,
   prefersHighContrast,
-  createSkipLink
-} from '@/utils/accessibility';
+  createSkipLink,
+} from "@/utils/accessibility";
 
 interface AccessibilityContextType {
-  announceToScreenReader: (message: string, priority?: 'polite' | 'assertive') => void;
+  announceToScreenReader: (
+    message: string,
+    priority?: "polite" | "assertive"
+  ) => void;
   focusElement: (elementId: string, delay?: number) => void;
   generateId: (prefix?: string) => string;
   prefersReducedMotion: boolean;
@@ -17,13 +20,17 @@ interface AccessibilityContextType {
   setDocumentTitle: (title: string) => void;
 }
 
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
+const AccessibilityContext = createContext<
+  AccessibilityContextType | undefined
+>(undefined);
 
 interface AccessibilityProviderProps {
   children: React.ReactNode;
 }
 
-export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ children }) => {
+export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({
+  children,
+}) => {
   const skipLinkRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
@@ -33,40 +40,47 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
     document.body.insertBefore(skipLink, document.body.firstChild);
 
     // Add main content landmark if it doesn't exist
-    if (!document.getElementById('main-content')) {
-      const mainContent = document.querySelector('main') || document.querySelector('#root');
+    if (!document.getElementById("main-content")) {
+      const mainContent =
+        document.querySelector("main") || document.querySelector("#root");
       if (mainContent && !mainContent.id) {
-        mainContent.id = 'main-content';
+        mainContent.id = "main-content";
       }
     }
 
     // Set up keyboard navigation for the application
     const handleGlobalKeydown = (event: KeyboardEvent) => {
       // Alt + 1: Focus main content
-      if (event.altKey && event.key === '1') {
+      if (event.altKey && event.key === "1") {
         event.preventDefault();
-        const mainContent = document.getElementById('main-content');
+        const mainContent = document.getElementById("main-content");
         if (mainContent) {
           mainContent.focus();
-          announceToScreenReader('Focused main content area');
+          announceToScreenReader("Focused main content area");
         }
       }
 
       // Alt + 2: Focus navigation
-      if (event.altKey && event.key === '2') {
+      if (event.altKey && event.key === "2") {
         event.preventDefault();
-        const navigation = document.querySelector('nav') || document.querySelector('[role="navigation"]');
+        const navigation =
+          document.querySelector("nav") ||
+          document.querySelector('[role="navigation"]');
         if (navigation instanceof HTMLElement) {
           navigation.focus();
-          announceToScreenReader('Focused navigation area');
+          announceToScreenReader("Focused navigation area");
         }
       }
 
       // Escape: Close modals or overlays
-      if (event.key === 'Escape') {
-        const activeDialog = document.querySelector('[role="dialog"][open], .dialog-open');
+      if (event.key === "Escape") {
+        const activeDialog = document.querySelector(
+          '[role="dialog"][open], .dialog-open'
+        );
         if (activeDialog) {
-          const closeButton = activeDialog.querySelector('[data-close], .close-button, button[aria-label*="close" i]') as HTMLButtonElement;
+          const closeButton = activeDialog.querySelector(
+            '[data-close], .close-button, button[aria-label*="close" i]'
+          ) as HTMLButtonElement;
           if (closeButton) {
             closeButton.click();
           }
@@ -74,10 +88,10 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
       }
     };
 
-    document.addEventListener('keydown', handleGlobalKeydown);
+    document.addEventListener("keydown", handleGlobalKeydown);
 
     return () => {
-      document.removeEventListener('keydown', handleGlobalKeydown);
+      document.removeEventListener("keydown", handleGlobalKeydown);
       if (skipLinkRef.current && document.body.contains(skipLinkRef.current)) {
         document.body.removeChild(skipLinkRef.current);
       }
@@ -86,7 +100,7 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 
   const setDocumentTitle = (title: string) => {
     document.title = `${title} - Mind Care`;
-    announceToScreenReader(`Page changed to: ${title}`, 'polite');
+    announceToScreenReader(`Page changed to: ${title}`, "polite");
   };
 
   const contextValue: AccessibilityContextType = {
@@ -108,7 +122,9 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 export const useAccessibility = (): AccessibilityContextType => {
   const context = useContext(AccessibilityContext);
   if (context === undefined) {
-    throw new Error('useAccessibility must be used within an AccessibilityProvider');
+    throw new Error(
+      "useAccessibility must be used within an AccessibilityProvider"
+    );
   }
   return context;
 };
@@ -124,12 +140,14 @@ export const useFocusTrap = (isActive: boolean) => {
     const focusableElements = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+    const lastElement = focusableElements[
+      focusableElements.length - 1
+    ] as HTMLElement;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Tab') {
+      if (event.key === "Tab") {
         if (event.shiftKey) {
           if (document.activeElement === firstElement) {
             event.preventDefault();
@@ -144,11 +162,11 @@ export const useFocusTrap = (isActive: boolean) => {
       }
     };
 
-    container.addEventListener('keydown', handleKeyDown);
+    container.addEventListener("keydown", handleKeyDown);
     firstElement?.focus();
 
     return () => {
-      container.removeEventListener('keydown', handleKeyDown);
+      container.removeEventListener("keydown", handleKeyDown);
     };
   }, [isActive]);
 
@@ -163,20 +181,20 @@ export const useAriaLive = () => {
   useEffect(() => {
     // Create live regions if they don't exist
     if (!politeRef.current) {
-      politeRef.current = document.createElement('div');
-      politeRef.current.setAttribute('aria-live', 'polite');
-      politeRef.current.setAttribute('aria-atomic', 'true');
-      politeRef.current.className = 'sr-only';
-      politeRef.current.id = 'polite-announcer';
+      politeRef.current = document.createElement("div");
+      politeRef.current.setAttribute("aria-live", "polite");
+      politeRef.current.setAttribute("aria-atomic", "true");
+      politeRef.current.className = "sr-only";
+      politeRef.current.id = "polite-announcer";
       document.body.appendChild(politeRef.current);
     }
 
     if (!assertiveRef.current) {
-      assertiveRef.current = document.createElement('div');
-      assertiveRef.current.setAttribute('aria-live', 'assertive');
-      assertiveRef.current.setAttribute('aria-atomic', 'true');
-      assertiveRef.current.className = 'sr-only';
-      assertiveRef.current.id = 'assertive-announcer';
+      assertiveRef.current = document.createElement("div");
+      assertiveRef.current.setAttribute("aria-live", "assertive");
+      assertiveRef.current.setAttribute("aria-atomic", "true");
+      assertiveRef.current.className = "sr-only";
+      assertiveRef.current.id = "assertive-announcer";
       document.body.appendChild(assertiveRef.current);
     }
 
@@ -184,16 +202,23 @@ export const useAriaLive = () => {
       if (politeRef.current && document.body.contains(politeRef.current)) {
         document.body.removeChild(politeRef.current);
       }
-      if (assertiveRef.current && document.body.contains(assertiveRef.current)) {
+      if (
+        assertiveRef.current &&
+        document.body.contains(assertiveRef.current)
+      ) {
         document.body.removeChild(assertiveRef.current);
       }
     };
   }, []);
 
-  const announce = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    const target = priority === 'polite' ? politeRef.current : assertiveRef.current;
+  const announce = (
+    message: string,
+    priority: "polite" | "assertive" = "polite"
+  ) => {
+    const target =
+      priority === "polite" ? politeRef.current : assertiveRef.current;
     if (target) {
-      target.textContent = '';
+      target.textContent = "";
       setTimeout(() => {
         if (target) {
           target.textContent = message;
@@ -208,16 +233,20 @@ export const useAriaLive = () => {
 // Hook for enhanced form accessibility
 export const useFormAccessibility = () => {
   const generateFieldId = (name: string) => `field-${name}-${Date.now()}`;
-  
+
   const generateDescriptionId = (fieldId: string) => `${fieldId}-description`;
-  
+
   const generateErrorId = (fieldId: string) => `${fieldId}-error`;
 
-  const getAriaDescribedBy = (fieldId: string, hasError: boolean, hasDescription: boolean) => {
+  const getAriaDescribedBy = (
+    fieldId: string,
+    hasError: boolean,
+    hasDescription: boolean
+  ) => {
     const ids: string[] = [];
     if (hasDescription) ids.push(generateDescriptionId(fieldId));
     if (hasError) ids.push(generateErrorId(fieldId));
-    return ids.length > 0 ? ids.join(' ') : undefined;
+    return ids.length > 0 ? ids.join(" ") : undefined;
   };
 
   return {

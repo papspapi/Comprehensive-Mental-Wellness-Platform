@@ -523,6 +523,8 @@ export const getBreathingPhaseColor = (phase: BreathingPhase, intensity: number 
     contract: `rgba(16, 185, 129, ${intensity})`,
     hold: `rgba(139, 92, 246, ${intensity})`,
     pause: `rgba(245, 158, 11, ${intensity})`,
+    inhale: `rgba(59, 130, 246, ${intensity})`,
+    exhale: `rgba(16, 185, 129, ${intensity})`,
   };
   return colors[phase.animation] || colors.hold;
 };

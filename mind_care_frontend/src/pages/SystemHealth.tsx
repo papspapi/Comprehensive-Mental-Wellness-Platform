@@ -1,28 +1,28 @@
-import { useState } from 'react';
+import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  Activity,
-  Server,
-  Database,
-  Wifi,
-  Shield,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Cpu,
-  HardDrive,
-  MemoryStick,
-  Globe,
-  RefreshCw,
-  Download,
-} from 'lucide-react';
+  FaChartLine as Activity,
+  FaServer as Server,
+  FaDatabase as Database,
+  FaWifi as Wifi,
+  FaShieldAlt as Shield,
+  FaExclamationTriangle as AlertTriangle,
+  FaCheckCircle as CheckCircle,
+  FaClock as Clock,
+  FaMicrochip as Cpu,
+  FaHdd as HardDrive,
+  FaMemory as MemoryStick,
+  FaGlobe as Globe,
+  FaSync as RefreshCw,
+  FaDownload as Download,
+} from 'react-icons/fa';
 
 const SystemHealth = () => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -129,12 +129,14 @@ const SystemHealth = () => {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+          <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing} className="flex items-center gap-2">
+            <span className={isRefreshing ? 'animate-spin' : ''}>
+              <RefreshCw size={16} />
+            </span>
             Refresh
           </Button>
-          <Button variant="hero">
-            <Download className="h-4 w-4 mr-2" />
+          <Button variant="hero" className="flex items-center gap-2">
+            <Download size={16} />
             Export Report
           </Button>
         </div>
@@ -145,7 +147,7 @@ const SystemHealth = () => {
         <Card className="bg-gradient-calm border-0 text-white">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Activity className="h-6 w-6" />
+              <Activity size={24} />
               <Badge className="bg-white/20 text-white">Live</Badge>
             </div>
             <CardTitle className="text-2xl">System Status</CardTitle>
@@ -160,8 +162,8 @@ const SystemHealth = () => {
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Globe className="h-6 w-6 text-primary" />
-              <CheckCircle className="h-5 w-5 text-severity-low" />
+              <Globe size={24} />
+              <CheckCircle size={20} />
             </div>
             <CardTitle>Uptime</CardTitle>
             <CardDescription>Last 30 days</CardDescription>
@@ -175,8 +177,8 @@ const SystemHealth = () => {
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Shield className="h-6 w-6 text-primary" />
-              <AlertTriangle className="h-5 w-5 text-severity-medium" />
+              <Shield size={24} />
+              <AlertTriangle size={20} />
             </div>
             <CardTitle>Security</CardTitle>
             <CardDescription>Active threats</CardDescription>
@@ -190,7 +192,7 @@ const SystemHealth = () => {
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <Clock className="h-6 w-6 text-primary" />
+              <Clock size={24} />
               <Badge variant="secondary">Avg</Badge>
             </div>
             <CardTitle>Response Time</CardTitle>
@@ -213,30 +215,33 @@ const SystemHealth = () => {
 
         <TabsContent value="performance" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {serverMetrics.map((metric, index) => (
-              <Card key={index}>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <metric.icon className="h-5 w-5 text-primary" />
-                      <CardTitle className="text-lg">{metric.name}</CardTitle>
+            {serverMetrics.map((metric, index) => {
+              const IconComponent = metric.icon;
+              return (
+                <Card key={index}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <IconComponent size={20} />
+                        <CardTitle className="text-lg">{metric.name}</CardTitle>
+                      </div>
+                      <Badge className={`text-white ${getMetricColor(metric.status)}`}>
+                        {metric.status}
+                      </Badge>
                     </div>
-                    <Badge className={`text-white ${getMetricColor(metric.status)}`}>
-                      {metric.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Usage</span>
-                      <span className="font-medium">{metric.value}%</span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Usage</span>
+                        <span className="font-medium">{metric.value}%</span>
+                      </div>
+                      <Progress value={metric.value} className="h-2" />
                     </div>
-                    <Progress value={metric.value} className="h-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </TabsContent>
 
@@ -244,7 +249,7 @@ const SystemHealth = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Server className="h-5 w-5" />
+                <Server size={20} />
                 <span>Service Status</span>
               </CardTitle>
               <CardDescription>Current status of all platform services</CardDescription>
@@ -284,7 +289,7 @@ const SystemHealth = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Shield className="h-5 w-5" />
+                <Shield size={20} />
                 <span>Security Events</span>
               </CardTitle>
               <CardDescription>Recent security incidents and alerts</CardDescription>
@@ -325,7 +330,7 @@ const SystemHealth = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Database className="h-5 w-5" />
+                <Database size={20} />
                 <span>System Logs</span>
               </CardTitle>
               <CardDescription>Recent system events and error logs</CardDescription>

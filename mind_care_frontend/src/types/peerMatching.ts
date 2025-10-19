@@ -805,7 +805,7 @@ export const calculateCompatibilityScore = (
 };
 
 const getYearNumber = (year: StudentYear): number => {
-  const yearMap = { freshman: 1, sophomore: 2, junior: 3, senior: 4, graduate: 5, phd: 6 };
+  const yearMap = { junior: 3, senior: 4, graduate: 5, passout: 6, other: 0 };
   return yearMap[year];
 };
 
