@@ -4,18 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAuth } from '@/contexts/AuthContext';
-import {
-  Send,
-  MessageCircle,
-  AlertTriangle,
-  Heart,
-  Clock,
-  CheckCircle,
-  Phone,
-  Shield,
-  Sparkles,
-} from 'lucide-react';
+import { Send, Heart, MessageCircle, Clock, AlertTriangle, CheckCircle, Shield, Sparkles, Phone } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -27,141 +16,105 @@ interface Message {
 }
 
 const AIChat = () => {
-  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Load messages from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("mindbuddy_messages");
-    if (saved) setMessages(JSON.parse(saved));
-  }, []);
+  // Scroll to bottom on new messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  // Save messages to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("mindbuddy_messages", JSON.stringify(messages));
     scrollToBottom();
   }, [messages]);
 
-  const scrollToBottom = (smooth = true) => {
-    const endEl = messagesEndRef.current;
-    if (!endEl) return;
+  // AI response generator (simplified)
+  const generateAIResponse = (userMessage: string): Message => {
+    const lower = userMessage.toLowerCase();
+    let severity: Message['severity'] = 'low';
+    let response = 'Thanks for sharing. I am here to support you!';
+    let suggestions: string[] = [
+      "Tell me more",
+      "Help me relax",
+      "I need study tips",
+    ];
 
-    let node: HTMLElement | null = endEl.parentElement as HTMLElement | null;
-    while (node) {
-      try {
-        const style = window.getComputedStyle(node);
-        const overflowY = style.overflowY;
-        const el = node as HTMLElement & { scrollTo?: (options?: ScrollToOptions) => void };
-        const isScrollable = el.scrollHeight > el.clientHeight;
-
-        if (isScrollable && (overflowY === 'auto' || overflowY === 'scroll')) {
-          if (typeof el.scrollTo === 'function') {
-            el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
-          } else {
-            el.scrollTop = el.scrollHeight;
-          }
-          return;
-        }
-      } catch (e) {}
-      node = node.parentElement as HTMLElement | null;
+    if (lower.includes('suicide') || lower.includes('kill myself')) {
+      severity = 'crisis';
+      response = `I'm very concerned. Please seek immediate help:
+- Lifeline: 988
+- Text HOME to 741741
+- Campus Counseling`;
+      suggestions = ['Connect me with crisis support'];
+    } else if (lower.includes('panic') || lower.includes('breakdown')) {
+      severity = 'high';
+      response = `I hear you’re struggling. Take slow breaths and try grounding techniques.`;
+      suggestions = ['Teach me breathing exercises'];
+    } else if (lower.includes('anxious') || lower.includes('stressed')) {
+      severity = 'medium';
+      response = `It sounds stressful. Let's explore some coping strategies.`;
+      suggestions = ['Help me manage stress'];
     }
+
+    return { id: Date.now().toString(), text: response, sender: 'ai', timestamp: new Date(), severity, suggestions };
   };
 
-  const handleSendMessage = async (text?: string) => {
-    const messageToSend = text ?? inputText;
-    if (!messageToSend.trim()) return;
+  const handleSendMessage = () => {
+    if (!inputText.trim()) return;
 
-    const userMessage: Message = { id: Date.now().toString(), text: messageToSend, sender: 'user', timestamp: new Date() };
+    const userMessage: Message = { id: Date.now().toString(), text: inputText, sender: 'user', timestamp: new Date() };
     setMessages((prev) => [...prev, userMessage]);
     setInputText('');
     setIsTyping(true);
 
-    try {
-      const res = await fetch('http://localhost:5000/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: messageToSend })
-      });
-
-      const data = await res.json();
-
-      const aiMessage: Message = {
-        id: data.id,
-        text: data.text,
-        sender: 'ai',
-        timestamp: new Date(data.timestamp),
-        severity: data.severity,
-        suggestions: data.suggestions
-      };
-
-      setMessages((prev) => [...prev, aiMessage]);
-    } catch (err) {
-      console.error(err);
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        text: "Sorry, I couldn't process your message. Try again.",
-        sender: 'ai',
-        timestamp: new Date(),
-        severity: 'low'
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
+    setTimeout(() => {
+      const aiResponse = generateAIResponse(inputText);
+      setMessages((prev) => [...prev, aiResponse]);
       setIsTyping(false);
-    }
+    }, 1200);
   };
 
   const getSeverityColor = (severity?: string) => {
     switch (severity) {
-      case 'crisis':
-        return 'border-l-4 border-l-red-500 bg-gradient-to-r from-red-50/80 to-red-100/60';
-      case 'high':
-        return 'border-l-4 border-l-orange-500 bg-gradient-to-r from-orange-50/80 to-orange-100/60';
-      case 'medium':
-        return 'border-l-4 text-black border-l-yellow-300 bg-gradient-to-r from-yellow-50/80 to-yellow-100/60'; // lighter yellow for better visibility
-      default:
-        return 'border-l-4 border-l-primary bg-gradient-to-r from-primary/5 to-primary/10';
+      case 'crisis': return 'border-l-red-500 bg-red-50';
+      case 'high': return 'border-l-orange-500 bg-orange-50';
+      case 'medium': return 'border-l-yellow-500 bg-yellow-50';
+      default: return 'border-l-primary bg-primary/10';
     }
   };
 
   const getSeverityIcon = (severity?: string) => {
     switch (severity) {
-      case 'crisis':
-        return <AlertTriangle className="h-4 w-4 text-red-600" />;
-      case 'high':
-        return <AlertTriangle className="h-4 w-4 text-orange-600" />;
-      case 'medium':
-        return <Clock className="h-4 w-4 text-yellow-600" />;
-      default:
-        return <Heart className="h-4 w-4 text-secondary" />;
+      case 'crisis': return <AlertTriangle className="h-4 w-4 text-red-600" />;
+      case 'high': return <AlertTriangle className="h-4 w-4 text-orange-600" />;
+      case 'medium': return <Clock className="h-4 w-4 text-yellow-600" />;
+      default: return <Heart className="h-4 w-4 text-secondary" />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-mesh">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 max-w-5xl">
-        {/* Chat interface */}
-        <Card className="enhanced-card slide-up mb-4 sm:mb-6">
-          <CardHeader className="border-b border-border/40 bg-gradient-to-r from-background to-background/80 p-4 sm:p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="p-2 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0">
-                  <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                </div>
-                <div>
-                  <CardTitle className="text-base sm:text-lg text-heading">
-                    AI Mental Health Assistant
-                  </CardTitle>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    Secure & confidential conversation
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
+      <div className="container mx-auto px-4 py-6 max-w-5xl">
+        {/* Chat Header */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-2">MindBuddy AI Support</h1>
+          <p className="text-muted-foreground">
+            Your personal mental health companion, confidential & 24/7.
+          </p>
+          <div className="flex justify-center gap-2 mt-2">
+            <Badge variant="secondary" className="flex items-center gap-1"><Sparkles className="h-3 w-3" /> AI-Powered</Badge>
+            <Badge variant="outline" className="flex items-center gap-1"><Shield className="h-3 w-3" /> Confidential</Badge>
+            <Badge variant="outline" className="flex items-center gap-1"><CheckCircle className="h-3 w-3" /> Crisis Detection</Badge>
+          </div>
+        </div>
 
+        {/* Chat Card */}
+        <Card className="mb-4">
+          <CardHeader className="bg-gradient-to-r from-background to-background/80 p-4">
+            <CardTitle>AI Mental Health Assistant</CardTitle>
+          </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className="h-96 p-4">
               <div className="space-y-4">
@@ -178,38 +131,27 @@ const AIChat = () => {
                       {msg.suggestions && (
                         <div className="mt-2 flex flex-wrap gap-1">
                           {msg.suggestions.map((sug, i) => (
-                            <Button key={i} variant="outline" size="sm" onClick={() => handleSendMessage(sug)}>
+                            <Button key={i} variant="outline" size="sm" onClick={() => setInputText(sug)}>
                               {sug}
                             </Button>
                           ))}
                         </div>
                       )}
+                      <p className="text-xs text-muted-foreground mt-1">{msg.timestamp.toLocaleTimeString()}</p>
                     </div>
                   </div>
                 ))}
                 {isTyping && (
-                  <div className="flex justify-start group fade-in">
-                    <div className="flex items-start space-x-2 sm:space-x-3">
-                      <div className="p-2 sm:p-3 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 shadow-soft flex-shrink-0">
-                        <Heart className="h-3 w-3 sm:h-4 sm:w-4 text-secondary animate-pulse" />
-                      </div>
-                      <div className="bg-gradient-to-br from-background to-background/80 border border-border/40 rounded-lg sm:rounded-2xl p-3 sm:p-4 shadow-soft flex items-center space-x-2 sm:space-x-3">
-                        <div className="flex space-x-1">
-                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-bounce"></div>
-                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        </div>
-                        <span className="text-xs sm:text-sm text-muted-foreground">
-                          MindBuddy is analyzing...
-                        </span>
-                      </div>
-                    </div>
+                  <div className="flex justify-start items-center space-x-2">
+                    <Heart className="h-4 w-4 text-secondary animate-pulse" />
+                    <span className="text-xs text-muted-foreground">MindBuddy is typing...</span>
                   </div>
                 )}
+                <div ref={messagesEndRef} />
               </div>
-              <div ref={messagesEndRef} />
             </ScrollArea>
 
+            {/* Input */}
             <div className="flex space-x-2 p-4 border-t border-border/40">
               <Input
                 value={inputText}
@@ -217,11 +159,23 @@ const AIChat = () => {
                 placeholder="Type a message..."
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               />
-              <Button onClick={() => handleSendMessage()} disabled={!inputText.trim() || isTyping}>
+              <Button onClick={handleSendMessage} disabled={!inputText.trim() || isTyping}>
                 <Send className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
+        </Card>
+
+        {/* Crisis Support */}
+        <Card className="bg-red-50 border-red-200 p-4">
+          <h3 className="font-bold text-red-800 mb-2">Emergency Support</h3>
+          <p className="text-red-700 text-sm mb-4">
+            If you are in crisis or having thoughts of self-harm, seek help immediately.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="destructive" className="flex items-center gap-2"><Phone /> Call 988</Button>
+            <Button variant="outline" className="flex items-center gap-2"><MessageCircle /> Text HOME to 741741</Button>
+          </div>
         </Card>
       </div>
     </div>
