@@ -20,6 +20,7 @@
   <img src="https://img.shields.io/badge/React-61DBFB?style=for-the-badge&logo=react&logoColor=black" />
   <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
   <img src="https://img.shields.io/badge/Bun.js-000000?style=for-the-badge&logo=bun&logoColor=white" />
@@ -39,23 +40,26 @@ Let’s make mental health support **accessible**, **inclusive**, and **tech-pow
 
 ```
 MInd_Care/
-├── public/                 # Static assets
-├── src/
-│   ├── components/         # Reusable UI components
-│   │   ├── chat/          # Chat-related components
-│   │   ├── dashboard/     # Dashboard widgets
-│   │   ├── layout/        # Layout components
-│   │   ├── ui/            # shadcn/ui components
-│   │   └── video/         # Video call components
-│   ├── contexts/          # React contexts
-│   ├── hooks/             # Custom React hooks
-│   ├── lib/               # Utility libraries
-│   ├── pages/             # Application pages
-│   ├── styles/            # Global styles
-│   └── types/             # TypeScript type definitions
-├── tailwind.config.ts     # Tailwind configuration
-├── vite.config.ts         # Vite configuration
-└── package.json           # Dependencies and scripts
+├── mind_care_backend/      # Backend API server
+│   ├── config/            # Database and authentication config
+│   ├── middleware/        # Authentication middleware
+│   ├── models/            # MongoDB models
+│   ├── routes/            # API routes
+│   ├── Server.js          # Main server file
+│   └── package.json       # Backend dependencies
+├── mind_care_frontend/     # Frontend React application
+│   ├── public/            # Static assets
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── contexts/      # React contexts
+│   │   ├── hooks/         # Custom hooks
+│   │   ├── pages/         # Application pages
+│   │   ├── services/      # API services
+│   │   ├── styles/        # Global styles
+│   │   └── types/         # TypeScript definitions
+│   ├── vite.config.ts     # Vite configuration
+│   └── package.json       # Frontend dependencies
+└── README.md              # Project documentation
 ```
 
 ## **Core Features**
@@ -126,12 +130,14 @@ git checkout -b feature/your-feature-name
 6. **Create a Pull Request (PR)**
    Submit your PR to the main branch and wait for review!
 
-7. **Testing**
+7. **Linting**
    ```
-   # Run tests
-   bun test
-   # or
-   npm test
+   # Frontend linting
+   cd mind_care_frontend
+   npm run lint
+   # Backend linting
+   cd mind_care_backend
+   npm run lint
    ```
 
 ---
