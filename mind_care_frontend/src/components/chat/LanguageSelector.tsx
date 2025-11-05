@@ -1,4 +1,5 @@
 // @ts-nocheck
+import React from 'react'; // added import react and now this will run fine on localhost.
 import {
   Select,
   SelectContent,
