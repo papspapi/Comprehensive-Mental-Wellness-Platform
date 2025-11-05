@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:006400,100:00FF00&height=150&section=header&text=MindCare%20-%20Hacktoberfest%202025&fontSize=35&fontColor=ffffff&animation=fadeIn" />
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:006400,100:00FF00&height=150&section=header&text=MindCare&fontSize=35&fontColor=ffffff&animation=fadeIn" />
 </p>
 
 <div align="center">
@@ -30,9 +30,7 @@
 
 ## About MindCare
 
-We’re proud to be part of **Hacktoberfest 2025**, celebrating collaboration and innovation in open-source.  
-Whether this is your **first contribution** or your **hundredth**, you belong here.  
-Let’s make mental health support **accessible**, **inclusive**, and **tech-powered**. 💫
+MindCare is your comprehensive mental health support platform, dedicated to making mental health care accessible, inclusive, and tech-powered. 💫
 
 ---
 
@@ -81,7 +79,6 @@ MInd_Care/
 
 | Label              | Description                           |
 | :----------------- | :------------------------------------ |
-| `hacktoberfest`    | Official Hacktoberfest-tagged issues  |
 | `good first issue` | Ideal for first-time contributors     |
 | `enhancement`      | Suggest new features or improvements  |
 | `bug`              | Fix broken or inconsistent behavior   |
@@ -146,6 +143,26 @@ git checkout -b feature/your-feature-name
 
 ---
 
+## Contributors
+
+A huge shoutout to all the amazing contributors who have helped build MindCare! Your efforts in making mental health support more accessible are truly appreciated. 🌟
+
+### Top Contributors
+- **AbhishekChamp879** (51 commits) - Project Lead
+- **AMIT KUMAR** (12 commits)
+- **KinshukSS2** (11 commits)
+- **AnkitaAman** (9 commits)
+- **Annanya Tiwary** (9 commits)
+- **Ri2-4** (6 commits)
+- **kirtanCoder** (6 commits)
+- **Arnab-dot** (5 commits)
+- **Gilson Oliveira** (5 commits)
+- And many more wonderful contributors!
+
+For the full list, check out our [contributors page](https://github.com/AbhishekChamp879/MInd_Care/graphs/contributors).
+
+---
+
 ## 📜 License
 
 <p>
@@ -172,9 +189,9 @@ git checkout -b feature/your-feature-name
 🙏 Acknowledgments
 
 Thanks to every contributor working to make mental health support accessible through open-source innovation.
-Special appreciation for Hacktoberfest participants - your contributions truly make a difference.
+Your contributions truly make a difference in helping people maintain better mental health.
 
-<p align="center"> <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00E676&center=true&vCenter=true&width=600&lines=Together%2C+we+build+for+a+healthier+future.;Happy+Hacktoberfest+💚" /> </p>
+<p align="center"> <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00E676&center=true&vCenter=true&width=600&lines=Together%2C+we+build+for+a+healthier+future.;Happy+Contributing+💚" /> </p>
 
 <div align="center">
 

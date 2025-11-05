@@ -2,13 +2,12 @@
 
 Thank you for your interest in contributing to MInd_Care! We're excited to have you as part of our community working to make mental health support more accessible.
 
-## 🎯 Hacktoberfest 2025 Contributors
+## 🎯 Getting Started
 
-Welcome Hacktoberfest participants! We're thrilled to be part of Hacktoberfest 2025. Here's everything you need to know to get started.
+Welcome contributors! Whether this is your first contribution or your hundredth, we're glad to have you here. Here's everything you need to know to get started.
 
-### 🏷️ Hacktoberfest Labels
+### 🏷️ Issue Labels
 
-- `hacktoberfest` - Issues specifically tagged for Hacktoberfest
 - `good first issue` - Perfect for newcomers
 - `beginner-friendly` - Great if you're new to React/TypeScript
 - `help wanted` - We need community help on these
@@ -50,7 +49,7 @@ git checkout -b fix/issue-number
 
 ## 📋 Before You Start
 
-1. **Check existing issues** - Look for `hacktoberfest` and `good first issue` labels
+1. **Check existing issues** - Look for `good first issue` and other relevant labels
 2. **Comment on the issue** - Let us know you're working on it
 3. **Read the issue description** - Make sure you understand the requirements
 4. **Ask questions** - Don't hesitate to ask for clarification
@@ -294,12 +293,7 @@ If you're looking for ways to contribute, here are some beginner-friendly areas:
 ### Contributors
 
 All contributors will be recognized in our README and project documentation.
-
-### Hacktoberfest Completion
-
-- Quality PRs that meet our guidelines count toward Hacktoberfest
-- We reserve the right to mark low-quality PRs as spam
-- Focus on meaningful contributions over quantity
+We appreciate every contribution, big or small!
 
 ## 📜 Code of Conduct
 

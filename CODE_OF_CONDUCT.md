@@ -68,13 +68,6 @@ We pledge to act and interact in ways that contribute to an open, welcoming, div
 - Using mental health terms as insults or casual expressions
 - Pressuring individuals to share personal mental health information
 
-**Hacktoberfest Specific:**
-
-- Submitting spam or low-quality pull requests for personal gain
-- Creating fake issues or contributions
-- Harassing maintainers for quick reviews or merges
-- Gaming the system to earn rewards dishonestly
-
 ## 💙 Our Mission & Values
 
 MInd_Care is dedicated to building a supportive, inclusive community focused on improving mental health accessibility. As a mental health platform, we hold ourselves to the highest standards of empathy, respect, and understanding.
@@ -206,17 +199,7 @@ Given our project's focus on mental health:
 - Support without trying to "fix" someone
 - Remember that mental health affects everyone differently
 
-## 🎃 Hacktoberfest Guidelines
-
-During Hacktoberfest and similar events:
-
-- Focus on meaningful contributions over quantity
-- Be patient with increased activity and newcomers
-- Help others understand project goals and standards
-- Report spam or low-quality contributions
-- Celebrate genuine efforts and learning
-
-## 🆘 Resources & Support
+##  Resources & Support
 
 ### Community Support
 

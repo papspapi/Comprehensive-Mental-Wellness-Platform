@@ -331,7 +331,6 @@ Once your environment is set up:
 1. 📖 Read the [Contributing Guidelines](CONTRIBUTING.md)
 2. 🎯 Check out [Good First Issues](GOOD_FIRST_ISSUES.md)
 3. 🌟 Pick an issue and start contributing!
-4. 🎃 Join Hacktoberfest 2025!
 
 Happy coding! 🚀
 

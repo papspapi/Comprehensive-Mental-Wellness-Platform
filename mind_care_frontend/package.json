@@ -11,8 +11,7 @@
     "vite",
     "tailwind",
     "shadcn",
-    "open-source",
-    "hacktoberfest"
+    "open-source"
   ],
   "author": "Abhishek Kumar Giri",
   "license": "MIT",
