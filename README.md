@@ -232,20 +232,12 @@ Your efforts in making mental health support more accessible are truly appreciat
       </a>
     </td>
     <td align="center" width="140">
-      <a href="https://github.com/gilsonbp">
-        <img src="https://avatars.githubusercontent.com/gilsonbp?v=4" width="80px;" alt="Gilson Oliveira" style="border-radius:50%"/><br/>
+      <a href="https://github.com/juninhokaponne">
+        <img src="https://avatars.githubusercontent.com/juninhokaponne?v=4" width="80px;" alt="Gilson Oliveira" style="border-radius:50%"/><br/>
         <sub><b>Gilson Oliveira</b></sub><br/>
         <sub>💻 5 commits</sub>
       </a>
     </td>
-    <td align="center" width="140">
-      <a href="https://github.com/AbhishekChamp879">
-        <img src="https://avatars.githubusercontent.com/AbhishekChamp879?v=4" width="80px;" alt="Abhishek Kumar Giri" style="border-radius:50%"/><br/>
-        <sub><b>Abhishek K. Giri</b></sub><br/>
-        <sub>💻 4 commits</sub>
-      </a>
-    </td>
-  </tr>
   <tr>
     <td align="center" width="140">
       <a href="https://github.com/Kalana0001">
